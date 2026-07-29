@@ -1,0 +1,8 @@
+<h2>Меню пицц</h2>
+<ul>
+  @for (pizza of pizzas(); track pizza.id) {
+    <li>
+      <a [routerLink]="['/pizza', pizza.id]"> {{ pizza.name }} — {{ pizza.price }} ₽ </a>
+    </li>
+  }
+</ul>

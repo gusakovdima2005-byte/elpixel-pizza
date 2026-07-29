@@ -1,0 +1,348 @@
+<div class="sky"></div>
+<div class="drift a"></div>
+<div class="drift b"></div>
+<div class="drift c"></div>
+
+<div class="wrap">
+  <nav class="chips" aria-label="Города">
+    @for (city of cities; track city.key) {
+      <button
+        class="chip"
+        [class.is-active]="activeCity() === city.key"
+        (click)="loadWeather(city.lat, city.lon, city.key)"
+        type="button"
+      >
+        {{ city.name }}
+      </button>
+    }
+  </nav>
+
+  <main class="grid">
+    <section class="panel" aria-label="Погода сейчас">
+      <div class="locbar">
+        <div class="loc">
+          <div class="loc__name">
+            <svg viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 22s7-6.2 7-11a7 7 0 1 0-14 0c0 4.8 7 11 7 11z" />
+              <circle cx="12" cy="11" r="2.4" fill="#fff" />
+            </svg>
+            <span>{{ activeCityName() }}</span>
+          </div>
+
+          <span class="status" [class.is-spin]="isLoading()">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2.2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="M21 12a9 9 0 1 1-2.64-6.36" />
+              <polyline points="21 3 21 9 15 9" />
+            </svg>
+            <span>{{ isLoading() ? 'Загрузка...' : error() ? 'Ошибка' : 'Обновлено' }}</span>
+          </span>
+        </div>
+      </div>
+
+      <div
+        class="hero"
+        [attr.data-ill]="weather()?.current?.weather_code | weatherIll"
+        [class.is-loading]="isLoading()"
+        [class.is-error]="!!error()"
+      >
+        <div class="scene">
+          <div class="skybox">
+            <div class="sun">
+              <div class="rays">
+                <i class="ray"></i><i class="ray"></i><i class="ray"></i><i class="ray"></i
+                ><i class="ray"></i><i class="ray"></i><i class="ray"></i><i class="ray"></i>
+              </div>
+              <div class="sphere">
+                <span class="eye l"></span><span class="eye r"></span><span class="mouth"></span>
+              </div>
+            </div>
+            <div class="clouds">
+              <span class="cloud main"></span><span class="cloud puff"></span>
+            </div>
+            <div class="overcast"></div>
+            <div class="fog">
+              <i style="left: 18px; top: 8px; width: 200px"></i>
+              <i style="left: 0; top: 42px; width: 236px"></i>
+              <i style="left: 30px; top: 76px; width: 180px"></i>
+              <i style="left: 10px; top: 104px; width: 210px"></i>
+            </div>
+            <div class="drizzle">
+              <i style="left: 6px; animation-delay: 0s"></i>
+              <i style="left: 28px; animation-delay: 0.4s"></i>
+              <i style="left: 50px; animation-delay: 0.8s"></i>
+              <i style="left: 72px; animation-delay: 0.2s"></i>
+              <i style="left: 94px; animation-delay: 0.6s"></i>
+              <i style="left: 116px; animation-delay: 0.1s"></i>
+              <i style="left: 138px; animation-delay: 0.5s"></i>
+              <i style="left: 160px; animation-delay: 0.9s"></i>
+            </div>
+            <div class="snow">
+              <i style="left: 4px; animation-delay: 0s"></i>
+              <i style="left: 24px; animation-delay: 0.9s"></i>
+              <i style="left: 44px; animation-delay: 1.7s"></i>
+              <i style="left: 64px; animation-delay: 0.4s"></i>
+              <i style="left: 84px; animation-delay: 1.2s"></i>
+              <i style="left: 104px; animation-delay: 2.1s"></i>
+              <i style="left: 124px; animation-delay: 0.6s"></i>
+              <i style="left: 144px; animation-delay: 1.5s"></i>
+              <i style="left: 164px; animation-delay: 0.2s"></i>
+              <i style="left: 184px; animation-delay: 1.9s"></i>
+              <i style="left: 198px; animation-delay: 0.8s"></i>
+              <i style="left: 12px; animation-delay: 1.3s"></i>
+            </div>
+            <div class="pour">
+              <i style="left: 6px"><span style="animation-delay: 0s"></span></i>
+              <i style="left: 30px"><span style="animation-delay: 0.25s"></span></i>
+              <i style="left: 54px"><span style="animation-delay: 0.1s"></span></i>
+              <i style="left: 78px"><span style="animation-delay: 0.35s"></span></i>
+              <i style="left: 102px"><span style="animation-delay: 0.15s"></span></i>
+              <i style="left: 126px"><span style="animation-delay: 0.4s"></span></i>
+              <i style="left: 150px"><span style="animation-delay: 0.05s"></span></i>
+              <i style="left: 174px"><span style="animation-delay: 0.3s"></span></i>
+            </div>
+            <svg class="bolt" viewBox="0 0 24 24" fill="url(#bg)">
+              <defs>
+                <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0" stop-color="#ffe27a" />
+                  <stop offset="1" stop-color="#ffc01f" />
+                </linearGradient>
+              </defs>
+              <path d="M13 2 4 14h6l-1 8 9-12h-6l1-8z" />
+            </svg>
+            <div class="drops">
+              <svg viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 3s6 6.5 6 11a6 6 0 0 1-12 0c0-4.5 6-11 6-11z" />
+              </svg>
+              <svg viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 3s6 6.5 6 11a6 6 0 0 1-12 0c0-4.5 6-11 6-11z" />
+              </svg>
+            </div>
+            <div class="flash"></div>
+          </div>
+        </div>
+
+        <div class="tempwrap">
+          <div class="temp">
+            <span>{{ weather()?.current?.temperature_2m ?? '--' }}</span
+            ><span class="deg">°C</span>
+          </div>
+          <div class="cond">{{ weather()?.current?.weather_code | weatherCode }}</div>
+        </div>
+
+        <div class="overlay load">
+          <div class="spinner"></div>
+          <span>Загрузка…</span>
+        </div>
+        <div class="overlay err">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path d="M12 3 2 20h20L12 3z" />
+            <line x1="12" y1="10" x2="12" y2="14" />
+            <circle cx="12" cy="17" r=".6" fill="currentColor" />
+          </svg>
+          <b>{{ error() }}</b>
+          <p>Проверьте соединение и повторите запрос</p>
+          <button class="retry" type="button" (click)="retry()">Повторить</button>
+        </div>
+      </div>
+
+      <div class="stats">
+        <div class="stat">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path d="M3 8h11a3 3 0 1 0-3-3" />
+            <path d="M3 12h15a3 3 0 1 1-3 3" />
+            <path d="M3 16h9a2.5 2.5 0 1 1-2.5 2.5" />
+          </svg>
+          <div class="v">{{ weather()?.current?.wind_speed_10m ?? '--' }} м/с</div>
+          <div class="l">Ветер</div>
+        </div>
+        <div class="stat">
+          <svg viewBox="0 0 24 24" fill="var(--drop)">
+            <path d="M12 3s6 6.5 6 11a6 6 0 0 1-12 0c0-4.5 6-11 6-11z" />
+          </svg>
+          <div class="v drop">{{ weather()?.current?.relative_humidity_2m ?? '--' }}%</div>
+          <div class="l">Влажность</div>
+        </div>
+        <div class="stat">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path d="M7 13a4 4 0 0 1 .6-7.96A5 5 0 0 1 17 7a3.5 3.5 0 0 1 0 7H7z" />
+            <line x1="9" y1="17" x2="8" y2="20" />
+            <line x1="13" y1="17" x2="12" y2="20" />
+          </svg>
+          <div class="v">{{ weather()?.hourly?.precipitation_probability?.[0] ?? '--' }}%</div>
+          <div class="l">Дождь</div>
+        </div>
+      </div>
+    </section>
+
+    <aside class="panel" aria-label="Прогноз на 7 дней">
+      <div class="week-head">
+        <svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <rect x="3" y="4" width="18" height="17" rx="3" />
+          <line x1="16" y1="2" x2="16" y2="6" />
+          <line x1="8" y1="2" x2="8" y2="6" />
+          <line x1="3" y1="10" x2="21" y2="10" />
+        </svg>
+        7 дней
+      </div>
+
+      @if (isLoading()) {
+        <div class="panel-placeholder">
+          <div class="spinner"></div>
+          <span>Загрузка…</span>
+        </div>
+      } @else if (error()) {
+        <div class="panel-placeholder error">
+          <span>{{ error() }}</span>
+          <button class="retry" type="button" (click)="retry()">Повторить</button>
+        </div>
+      } @else {
+        <div class="tomorrow">
+          <div class="t-ill" [attr.data-ill]="tomorrow()?.code | weatherIll">
+            <div class="ms">
+              <i class="mr"></i><i class="mr"></i><i class="mr"></i><i class="mr"></i
+              ><i class="mr"></i><i class="mr"></i><i class="mr"></i><i class="mr"></i>
+              <span class="mb"></span>
+              <span class="me l"></span><span class="me r"></span><span class="mm"></span>
+            </div>
+            <span class="mc"></span>
+            <div class="m-overcast"></div>
+            <svg class="m-bolt" viewBox="0 0 24 24" fill="url(#bg2)">
+              <defs>
+                <linearGradient id="bg2" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0" stop-color="#ffe27a" />
+                  <stop offset="1" stop-color="#ffc01f" />
+                </linearGradient>
+              </defs>
+              <path d="M13 2 4 14h6l-1 8 9-12h-6l1-8z" />
+            </svg>
+            <div class="m-fog">
+              <i style="left: 6px; top: 6px; width: 80px"></i>
+              <i style="left: 0; top: 22px; width: 92px"></i>
+              <i style="left: 12px; top: 38px; width: 70px"></i>
+            </div>
+            <div class="m-drizzle">
+              <i style="left: 4px; animation-delay: 0s"></i>
+              <i style="left: 16px; animation-delay: 0.4s"></i>
+              <i style="left: 28px; animation-delay: 0.8s"></i>
+              <i style="left: 40px; animation-delay: 0.2s"></i>
+              <i style="left: 52px; animation-delay: 0.6s"></i>
+              <i style="left: 60px; animation-delay: 0.1s"></i>
+            </div>
+            <div class="m-snow">
+              <i style="left: 4px; animation-delay: 0s"></i>
+              <i style="left: 16px; animation-delay: 0.8s"></i>
+              <i style="left: 28px; animation-delay: 1.5s"></i>
+              <i style="left: 40px; animation-delay: 0.3s"></i>
+              <i style="left: 52px; animation-delay: 1.1s"></i>
+              <i style="left: 62px; animation-delay: 1.9s"></i>
+              <i style="left: 70px; animation-delay: 0.6s"></i>
+            </div>
+            <div class="m-pour">
+              <i style="left: 4px"><span style="animation-delay: 0s"></span></i>
+              <i style="left: 16px"><span style="animation-delay: 0.25s"></span></i>
+              <i style="left: 28px"><span style="animation-delay: 0.1s"></span></i>
+              <i style="left: 40px"><span style="animation-delay: 0.35s"></span></i>
+              <i style="left: 52px"><span style="animation-delay: 0.15s"></span></i>
+              <i style="left: 60px"><span style="animation-delay: 0.4s"></span></i>
+            </div>
+            <span class="md">
+              <svg viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 3s6 6.5 6 11a6 6 0 0 1-12 0c0-4.5 6-11 6-11z" />
+              </svg>
+              <svg viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 3s6 6.5 6 11a6 6 0 0 1-12 0c0-4.5 6-11 6-11z" />
+              </svg>
+            </span>
+          </div>
+          <div class="t-meta">
+            <div class="lbl">Завтра</div>
+            <div class="big">
+              <span>{{ tomorrow()?.tempMax ?? '--' }}</span>
+              <span class="lo">/{{ tomorrow()?.tempMin }}°</span>
+            </div>
+            <div class="sub">{{ tomorrow()?.code | weatherCode }}</div>
+          </div>
+        </div>
+
+        <div class="forecast">
+          @for (day of dailyForecast(); track $index) {
+            <div class="frow">
+              <span class="day">{{ day.day }}</span>
+              <span class="e">{{ day.code | weatherEmoji }}</span>
+              <span class="c">{{ day.code | weatherCode }}</span>
+              <span class="tg">
+                {{ day.tempMax > 0 ? `+${day.tempMax}` : `-${day.tempMax}` }}°
+                <span class="lo"
+                  >{{ day.tempMin > 0 ? `+${day.tempMin}` : `-${day.tempMin}` }}°</span
+                ></span
+              >
+            </div>
+          }
+        </div>
+      }
+    </aside>
+
+    <section class="panel hours-panel" aria-label="Сегодня по часам">
+      <div class="sec-head">
+        <h3>Сегодня</h3>
+      </div>
+
+      @if (isLoading()) {
+        <div class="panel-placeholder">
+          <div class="spinner"></div>
+          <span>Загрузка…</span>
+        </div>
+      } @else if (error()) {
+        <div class="panel-placeholder error">
+          <span>{{ error() }}</span>
+          <button class="retry" type="button" (click)="retry()">Повторить</button>
+        </div>
+      } @else {
+        <div class="hours">
+          @for (hour of hourlyForecast(); track $index) {
+            <div class="hour" [class.is-active]="$index === 0">
+              <div class="t">{{ hour.temp }}°</div>
+              <div class="e">{{ hour.code | weatherEmoji }}</div>
+              <div class="h">{{ hour.time }}</div>
+            </div>
+          }
+        </div>
+      }
+    </section>
+  </main>
+</div>
