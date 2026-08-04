@@ -8,8 +8,8 @@
     @for (city of cities; track city.key) {
       <button
         class="chip"
-        [class.is-active]="activeCity() === city.key"
-        (click)="loadWeather(city.lat, city.lon, city.key)"
+        [class.is-active]="activeCityKey() === city.key"
+        (click)="selectCity(city)"
         type="button"
       >
         {{ city.name }}
@@ -306,9 +306,9 @@
               <span class="e">{{ day.code | weatherEmoji }}</span>
               <span class="c">{{ day.code | weatherCode }}</span>
               <span class="tg">
-                {{ day.tempMax > 0 ? `+${day.tempMax}` : `-${day.tempMax}` }}°
+                {{ day.tempMax >= 0 ? `+${day.tempMax}` : `${day.tempMax}` }}°
                 <span class="lo"
-                  >{{ day.tempMin > 0 ? `+${day.tempMin}` : `-${day.tempMin}` }}°</span
+                  >{{ day.tempMin >= 0 ? `+${day.tempMin}` : `${day.tempMin}` }}°</span
                 ></span
               >
             </div>

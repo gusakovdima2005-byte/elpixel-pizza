@@ -70,3 +70,10 @@ export interface DailyData {
   precipitation_sum: number[];
   weather_code: number[];
 }
+
+export interface City {
+  key: string;
+  name: string;
+  lat: number;
+  lon: number;
+}
