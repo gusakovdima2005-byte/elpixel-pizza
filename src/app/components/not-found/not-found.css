@@ -1,0 +1,125 @@
+:host {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: calc(100vh - 72px);
+  padding: 40px 24px;
+}
+
+.scene {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  max-width: 520px;
+}
+
+.pizza-404 {
+  position: relative;
+  width: 160px;
+  height: 160px;
+  margin-bottom: 24px;
+}
+
+.slice {
+  position: absolute;
+  font-size: 5rem;
+  animation: float 3s ease-in-out infinite;
+  user-select: none;
+}
+
+.slice-1 {
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  animation-delay: 0s;
+}
+
+.slice-2 {
+  bottom: 10px;
+  left: 5px;
+  font-size: 4rem;
+  animation-delay: 0.6s;
+}
+
+.slice-3 {
+  bottom: 10px;
+  right: 5px;
+  font-size: 4rem;
+  animation-delay: 1.2s;
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-12px) rotate(6deg);
+  }
+}
+
+h1 {
+  font-size: 7rem;
+  font-weight: 800;
+  line-height: 1;
+  background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 16px;
+  letter-spacing: -4px;
+}
+
+.subtitle {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 16px;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--color-dark);
+  white-space: nowrap;
+}
+
+.line {
+  display: block;
+  width: 40px;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--color-secondary));
+  border-radius: 2px;
+}
+
+.line-right {
+  background: linear-gradient(90deg, var(--color-secondary), transparent);
+}
+
+p {
+  font-size: 1.05rem;
+  color: var(--color-gray);
+  line-height: 1.7;
+  margin-bottom: 36px;
+}
+
+a {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 32px;
+  background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
+  color: var(--color-white);
+  font-weight: 700;
+  font-size: 1rem;
+  border-radius: var(--radius-xl);
+  box-shadow: 0 6px 24px rgba(230, 57, 70, 0.3);
+  transition: transform var(--transition), box-shadow var(--transition);
+  cursor: pointer;
+}
+
+a:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 32px rgba(230, 57, 70, 0.4);
+}
+
+a:active {
+  transform: translateY(-1px);
+}

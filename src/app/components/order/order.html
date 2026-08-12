@@ -1,0 +1,86 @@
+<h1>Оформление заказа</h1>
+
+<form [formGroup]="orderForm" (ngSubmit)="onSumbit()">
+
+  <div class="field">
+    <div class="label-row">
+      <label for="firstName">Имя<span class="required">*</span></label>
+    </div>
+    <input id="firstName" formControlName="firstName" placeholder="Дима" />
+    <div class="error-container">
+      @if (orderForm.controls.firstName.invalid && orderForm.controls.firstName.touched) {
+        @if (orderForm.controls.firstName.hasError('required')) {
+          <small>Обязательное поле</small>
+        }
+        @if (orderForm.controls.firstName.hasError('minlength')) {
+          <small>Минимум 2 символа</small>
+        }
+      }
+    </div>
+  </div>
+
+  <div class="field">
+    <div class="label-row">
+      <label for="lastName">Фамилия<span class="required">*</span></label>
+    </div>
+    <input id="lastName" formControlName="lastName" placeholder="Гусаков" />
+    <div class="error-container">
+      @if (orderForm.controls.lastName.invalid && orderForm.controls.lastName.touched) {
+        @if (orderForm.controls.lastName.hasError('required')) {
+          <small>Обязательное поле</small>
+        }
+        @if (orderForm.controls.lastName.hasError('minlength')) {
+          <small>Минимум 5 символов</small>
+        }
+        @if (orderForm.controls.lastName.hasError('maxlength')) {
+          <small>Максимум 20 символов</small>
+        }
+      }
+    </div>
+  </div>
+
+  <div class="field">
+    <div class="label-row">
+      <label for="email">Почта<span class="required">*</span></label>
+    </div>
+    <input id="email" formControlName="email" placeholder="example@gmail.com" />
+    <div class="error-container">
+      @if (orderForm.controls.email.invalid && orderForm.controls.email.touched) {
+        @if (orderForm.controls.email.hasError('required')) {
+          <small>Обязательное поле</small>
+        }
+        @if (orderForm.controls.email.hasError('email')) {
+          <small>Неверный формат email</small>
+        }
+      }
+    </div>
+  </div>
+
+  <div class="field">
+    <div class="label-row">
+      <label for="age">Возраст</label>
+      <span class="optional">необязательно</span>
+    </div>
+    <input id="age" formControlName="age" type="text" inputmode="numeric" placeholder="20" />
+    <div class="error-container">
+      @if (orderForm.controls.age.hasError('age')) {
+        <small>{{ orderForm.controls.age.getError('age').message }}</small>
+      }
+    </div>
+  </div>
+
+  <div class="field">
+    <div class="checkbox-row">
+      <input id="agreeToTerms" type="checkbox" formControlName="agreeToTerms" />
+      <label for="agreeToTerms">Согласие с правилами компании<span class="required">*</span></label>
+    </div>
+    <div class="error-container">
+      @if (orderForm.controls.agreeToTerms.invalid && orderForm.controls.agreeToTerms.touched) {
+        <small>Необходимо согласиться с правилами</small>
+      }
+    </div>
+  </div>
+
+  <button type="submit" [disabled]="orderForm.invalid">Заказать</button>
+
+</form>
